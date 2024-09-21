@@ -1,0 +1,19 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/SaXaReD/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/SaXaReD/frontend-project-46/actions)",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx jest",
+    "test-coverage": "npx jest --coverage"
+  },
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "author": "Andrey Sakharov",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.1.0"
+  }
+}
