@@ -1,0 +1,18 @@
+import path from 'path';
+import fs from 'fs'
+import parseData from '../src/parsers.js'
+
+const getFileExtension = (filePath) => filePath.split('.').at(-1);
+const getDataForParse = (filePath) => fs.readFileSync(path.resolve(filePath));
+
+export default (firstObjPath, secondObjPath) => {
+  const firstObjExt = getFileExtension(firstObjPath);
+  const firstObjData = getDataForParse(firstObjPath);
+  const parseDataFirstObj = parseData(firstObjData, firstObjExt);
+
+  const secondObjExt = getFileExtension(secondObjPath);
+  const secondObjData = getDataForParse(secondObjPath);
+  const parseDataSecondObj = parseData(secondObjData, secondObjExt);
+  
+  return [{...parseDataFirstObj}, {...parseDataSecondObj}];
+};
