@@ -9,6 +9,6 @@ const finalDiff = `{
   + verbose: true
 }`;
 
-test('gendiff', () => {
+test('gendiff JSON', () => {
   expect(gendiff('__fixtures__/file1.json', '__fixtures__/file2.json')).toEqual(finalDiff);
 });
