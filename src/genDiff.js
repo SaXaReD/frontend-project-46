@@ -22,9 +22,9 @@ export default (obj1, obj2) => {
     } else if (_.isEqual(value1, value2)) {
       result = `${result}\n    ${key}: ${value1}`;
     } else {
-      result = `${result}\n  - ${key}: ${value1}\n  + ${key}: ${value2}`
+      result = `${result}\n  - ${key}: ${value1}\n  + ${key}: ${value2}`;
     }
   });
-  result = `${result}\n}`
+  result = `${result}\n}`;
   return result;
 };
