@@ -1,7 +1,11 @@
 import getStylish from './stylish.js';
+import getPlain from './plain.js';
 
 export default (data, format) => {
   switch (format) {
+    case 'plain':
+      return getPlain(data);
+
     default:
       return getStylish(data);
   }
