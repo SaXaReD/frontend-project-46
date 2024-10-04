@@ -4,9 +4,9 @@ const getSortedKeys = (obj1, obj2) => {
   const obj1Keys = Object.keys(obj1);
   const obj2Keys = Object.keys(obj2);
 
-  const arrayOfKeys = [...new Set([...obj1Keys, ...obj2Keys])].toSorted();
+  const arrayOfKeys = [...new Set([...obj1Keys, ...obj2Keys])];
 
-  return arrayOfKeys;
+  return arrayOfKeys.toSorted();
 };
 
 const genDiff = (obj1, obj2) => getSortedKeys(obj1, obj2).map((key) => {
