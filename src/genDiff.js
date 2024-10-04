@@ -9,22 +9,29 @@ const getSortedKeys = (obj1, obj2) => {
   return arrayOfKeys;
 };
 
-export default (obj1, obj2) => {
-  let result = '{';
-  getSortedKeys(obj1, obj2).forEach((key) => {
-    const value1 = obj1[key];
-    const value2 = obj2[key];
+const genDiff = (obj1, obj2) => getSortedKeys(obj1, obj2).map((key) => {
+  const value1 = obj1[key];
+  const value2 = obj2[key];
 
-    if (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)) {
-      result = `${result}\n  - ${key}: ${value1}`;
-    } else if (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) {
-      result = `${result}\n  + ${key}: ${value2}`;
-    } else if (_.isEqual(value1, value2)) {
-      result = `${result}\n    ${key}: ${value1}`;
-    } else {
-      result = `${result}\n  - ${key}: ${value1}\n  + ${key}: ${value2}`;
-    }
-  });
-  result = `${result}\n}`;
-  return result;
-};
+  if (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)) {
+    return { key, value1, status: 'deleted' };
+  }
+
+  if (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) {
+    return { key, value2, status: 'added' };
+  }
+
+  if (_.isEqual(value1, value2)) {
+    return { key, value1, status: 'unchanged' };
+  }
+
+  if (_.isObject(value1) && _.isObject(value2)) {
+    return { key, children: genDiff(value1, value2), status: 'nested' };
+  }
+
+  return {
+    key, value1, value2, status: 'changed',
+  };
+});
+
+export default genDiff;

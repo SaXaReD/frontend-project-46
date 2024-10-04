@@ -10,3 +10,5 @@
 [![asciicast](https://asciinema.org/a/zas3DfWun5qUkei29OHk9PnaO.svg)](https://asciinema.org/a/zas3DfWun5qUkei29OHk9PnaO)
 ### gendiff YAML Files:
 [![asciicast](https://asciinema.org/a/Tlk4tQ8mxg67DPgOzUp1iyiEO.svg)](https://asciinema.org/a/Tlk4tQ8mxg67DPgOzUp1iyiEO)
+### gendiff for nested data
+[![asciicast](https://asciinema.org/a/LEB9DFDGxmWm1GfEqsCxXIaxj.svg)](https://asciinema.org/a/LEB9DFDGxmWm1GfEqsCxXIaxj)
