@@ -46,7 +46,7 @@ export default (tree) => {
           ];
 
         default:
-          throw new Error(`Unknown type ${status}.`);
+          throw new Error(`Unknown type: ${status}.`);
       }
     });
 

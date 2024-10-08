@@ -5,8 +5,8 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx jest",
-    "test-coverage": "npx jest --coverage"
+    "test": "jest --colors",
+    "test-coverage": "jest --coverage"
   },
   "bin": {
     "gendiff": "bin/gendiff.js"
