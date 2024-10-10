@@ -1,12 +1,14 @@
 import yaml from 'yaml';
 
-export default (dataForParse, fileExtension) => {
-  switch (fileExtension) {
+export default (data, format) => {
+  switch (format) {
     case 'yml':
-      return yaml.parse(dataForParse);
+      return yaml.parse(data);
     case 'yaml':
-      return yaml.parse(dataForParse);
+      return yaml.parse(data);
+    case 'json':
+      return JSON.parse(data);
     default:
-      return JSON.parse(dataForParse);
+      throw new Error(`Invalid format: .${format}`);
   }
 };

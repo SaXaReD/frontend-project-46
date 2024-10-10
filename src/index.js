@@ -1,20 +1,26 @@
 import path from 'path';
 import fs from 'fs';
-import parseData from './parsers.js';
-import genDiff from './genDiff.js';
-import getFormat from './formater/index.js';
+import parse from './parsers.js';
+import buildTree from './genDiff.js';
+import format from './formater/index.js';
 
-const getFileExtension = (filePath) => filePath.split('.').at(-1);
-const getDataForParse = (filePath) => fs.readFileSync(path.resolve(filePath), 'utf-8');
+const extractFormat = (filePath) => filePath.split('.').at(-1);
 
-export default (firstObjPath, secondObjPath, format) => {
-  const firstObjExt = getFileExtension(firstObjPath);
-  const firstObjData = getDataForParse(firstObjPath);
-  const parseDataFirstObj = parseData(firstObjData, firstObjExt);
+const readFile = (filePath) => {
+  const fullPath = path.resolve(process.cwd(), filePath);
+  const data = fs.readFileSync(fullPath, 'utf-8');
+  return data;
+};
 
-  const secondObjExt = getFileExtension(secondObjPath);
-  const secondObjData = getDataForParse(secondObjPath);
-  const parseDataSecondObj = parseData(secondObjData, secondObjExt);
-  const result = genDiff(parseDataFirstObj, parseDataSecondObj);
-  return getFormat(result, format);
+const getData = (filePath) => {
+  const fileData = readFile(filePath);
+  return parse(fileData, extractFormat(filePath));
+};
+
+export default (filePath1, filePath2, outputFormat = 'stylish') => {
+  const data1 = getData(filePath1);
+  const data2 = getData(filePath2);
+
+  const diff = buildTree(data1, data2);
+  return format(diff, outputFormat);
 };

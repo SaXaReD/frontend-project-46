@@ -6,11 +6,11 @@ export default (data, format) => {
   switch (format) {
     case 'plain':
       return getPlain(data);
-
     case 'json':
       return getJson(data);
-
-    default:
+    case 'stylish':
       return getStylish(data);
+    default:
+      throw new Error(`Unknown format: ${format}.`);
   }
 };

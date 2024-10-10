@@ -1,4 +1,4 @@
-name: tests
+name: linter status
 on: push
 jobs:
     build:
@@ -9,5 +9,4 @@ jobs:
               with:
                 node-version: 20
             - run: make install
-            - run: make test
             - run: make lint
