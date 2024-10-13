@@ -9,6 +9,6 @@ export default (data, format) => {
     case 'json':
       return JSON.parse(data);
     default:
-      throw new Error(`Invalid format: .${format}`);
+      throw new Error(`Invalid format: ${format}`);
   }
 };

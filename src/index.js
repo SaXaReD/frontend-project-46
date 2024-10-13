@@ -8,8 +8,7 @@ const extractFormat = (filePath) => filePath.split('.').at(-1);
 
 const readFile = (filePath) => {
   const fullPath = path.resolve(process.cwd(), filePath);
-  const data = fs.readFileSync(fullPath, 'utf-8');
-  return data;
+  return fs.readFileSync(fullPath, 'utf-8');
 };
 
 const getData = (filePath) => {

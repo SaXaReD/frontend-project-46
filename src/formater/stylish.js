@@ -23,21 +23,21 @@ export default (tree) => {
     const bracketIndent = getBrackeIndent(depth);
     const lines = currentValue.flatMap((node) => {
       const {
-        key, children, status, value1, value2,
+        key, children, type, value, value1, value2,
       } = node;
 
-      switch (status) {
+      switch (type) {
+        case 'deleted':
+          return `${currentIndent}- ${key}: ${stringify(value, depth + 1)}`;
+
+        case 'added':
+          return `${currentIndent}+ ${key}: ${stringify(value, depth + 1)}`;
+
         case 'nested':
           return `${currentIndent}  ${key}: ${iter(children, depth + 1)}`;
 
-        case 'deleted':
-          return `${currentIndent}- ${key}: ${stringify(value1, depth + 1)}`;
-
-        case 'added':
-          return `${currentIndent}+ ${key}: ${stringify(value2, depth + 1)}`;
-
         case 'unchanged':
-          return `${currentIndent}  ${key}: ${stringify(value1, depth + 1)}`;
+          return `${currentIndent}  ${key}: ${stringify(value, depth + 1)}`;
 
         case 'changed':
           return [
@@ -46,7 +46,7 @@ export default (tree) => {
           ];
 
         default:
-          throw new Error(`Unknown type: ${status}.`);
+          throw new Error(`Unknown type: ${type}.`);
       }
     });
 

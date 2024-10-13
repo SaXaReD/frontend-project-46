@@ -11,6 +11,6 @@ export default (data, format) => {
     case 'stylish':
       return getStylish(data);
     default:
-      throw new Error(`Unknown format: ${format}.`);
+      throw new Error(`Unknown format: ${format}`);
   }
 };

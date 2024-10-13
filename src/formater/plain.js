@@ -9,19 +9,19 @@ export default (tree) => {
   const iter = (obj, pathToObj) => {
     const result = obj.flatMap((node) => {
       const {
-        key, children, status, value1, value2,
+        key, children, type, value, value1, value2,
       } = node;
       const pathToNode = (pathToObj === '') ? `${key}` : `${pathToObj}.${key}`;
 
-      switch (status) {
-        case 'nested':
-          return iter(children, pathToNode);
-
+      switch (type) {
         case 'deleted':
           return `Property '${pathToNode}' was removed`;
 
         case 'added':
-          return `Property '${pathToNode}' was added with value: ${getValue(value2)}`;
+          return `Property '${pathToNode}' was added with value: ${getValue(value)}`;
+
+        case 'nested':
+          return iter(children, pathToNode);
 
         case 'changed':
           return `Property '${pathToNode}' was updated. From ${getValue(value1)} to ${getValue(value2)}`;
@@ -30,7 +30,7 @@ export default (tree) => {
           return [];
 
         default:
-          throw new Error(`Unknown type: ${status}.`);
+          throw new Error(`Unknown type: ${type}.`);
       }
     });
     return result.join('\n');
