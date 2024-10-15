@@ -1,39 +1,45 @@
 import _ from 'lodash';
 
-const getValue = (value) => {
-  if (typeof value === 'string') return `'${value}'`;
-  return (_.isObject(value)) ? '[complex value]' : String(value);
+const stringify = (data) => {
+  if (typeof data === 'string') {
+    return `'${data}'`;
+  } if (_.isObject(data)) {
+    return '[complex value]';
+  }
+  return String(data);
 };
 
-export default (tree) => {
-  const iter = (obj, pathToObj) => {
-    const result = obj.flatMap((node) => {
-      const {
-        key, children, type, value, value1, value2,
-      } = node;
-      const pathToNode = (pathToObj === '') ? `${key}` : `${pathToObj}.${key}`;
-
-      switch (type) {
-        case 'deleted':
-          return `Property '${pathToNode}' was removed`;
-
-        case 'added':
-          return `Property '${pathToNode}' was added with value: ${getValue(value)}`;
-
-        case 'nested':
-          return iter(children, pathToNode);
-
-        case 'changed':
-          return `Property '${pathToNode}' was updated. From ${getValue(value1)} to ${getValue(value2)}`;
-
-        case 'unchanged':
-          return [];
-
-        default:
-          throw new Error(`Unknown type: ${type}.`);
-      }
-    });
-    return result.join('\n');
-  };
-  return iter(tree, '');
+const nodeProperty = (node, PropertyPath) => {
+  if (PropertyPath === '') {
+    return `${node.key}`;
+  }
+  return `${PropertyPath}.${node.key}`;
 };
+
+const format = (tree, PropertyPath = '') => {
+  const buildOutput = tree.flatMap((node) => {
+    switch (node.type) {
+      case 'deleted':
+        return `Property '${nodeProperty(node, PropertyPath)}' was removed`;
+
+      case 'added':
+        return `Property '${nodeProperty(node, PropertyPath)}' was added with value: ${stringify(node.value)}`;
+
+      case 'nested':
+        return format(node.children, nodeProperty(node, PropertyPath));
+
+      case 'changed':
+        return `Property '${nodeProperty(node, PropertyPath)}' was updated. From ${stringify(node.value1)} to ${stringify(node.value2)}`;
+
+      case 'unchanged':
+        return [];
+
+      default:
+        throw new Error(`Unknown type: ${node.type}.`);
+    }
+  })
+    .join('\n');
+  return buildOutput;
+};
+
+export default format;
