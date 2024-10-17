@@ -1,14 +1,10 @@
 import _ from 'lodash';
 
-const ident = (depth, type, spacesCount = 4, replacer = ' ') => {
-  switch (type) {
-    case 'open':
-      return replacer.repeat((depth * spacesCount) - 2);
-    case 'close':
-      return replacer.repeat((depth * spacesCount) - spacesCount);
-    default:
-      return new Error(`Incorrect type: ${type}`);
+const ident = (depth, type = 'open', spacesCount = 4, replacer = ' ') => {
+  if (type === 'open') {
+    return replacer.repeat((depth * spacesCount) - 2);
   }
+  return replacer.repeat((depth * spacesCount) - spacesCount);
 };
 
 const stringify = (data, depth = 1) => {
@@ -17,7 +13,7 @@ const stringify = (data, depth = 1) => {
   }
   const collection = Object
     .entries(data)
-    .map(([key, value]) => `${ident(depth, 'open')}  ${key}: ${stringify(value, depth + 1)}`)
+    .map(([key, value]) => `${ident(depth)}  ${key}: ${stringify(value, depth + 1)}`)
     .join('\n');
   return `{\n${collection}\n${ident(depth, 'close')}}`;
 };
@@ -26,21 +22,21 @@ const format = (tree, depth = 1) => {
   const buildOutput = tree.flatMap((node) => {
     switch (node.type) {
       case 'deleted':
-        return `${ident(depth, 'open')}- ${node.key}: ${stringify(node.value, depth + 1)}`;
+        return `${ident(depth)}- ${node.key}: ${stringify(node.value, depth + 1)}`;
 
       case 'added':
-        return `${ident(depth, 'open')}+ ${node.key}: ${stringify(node.value, depth + 1)}`;
+        return `${ident(depth)}+ ${node.key}: ${stringify(node.value, depth + 1)}`;
 
       case 'nested':
-        return `${ident(depth, 'open')}  ${node.key}: ${format(node.children, depth + 1)}`;
+        return `${ident(depth)}  ${node.key}: ${format(node.children, depth + 1)}`;
 
       case 'unchanged':
-        return `${ident(depth, 'open')}  ${node.key}: ${stringify(node.value, depth + 1)}`;
+        return `${ident(depth)}  ${node.key}: ${stringify(node.value, depth + 1)}`;
 
       case 'changed':
         return [
-          `${ident(depth, 'open')}- ${node.key}: ${stringify(node.value1, depth + 1)}`,
-          `${ident(depth, 'open')}+ ${node.key}: ${stringify(node.value2, depth + 1)}`,
+          `${ident(depth)}- ${node.key}: ${stringify(node.value1, depth + 1)}`,
+          `${ident(depth)}+ ${node.key}: ${stringify(node.value2, depth + 1)}`,
         ];
 
       default:
